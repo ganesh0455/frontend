@@ -30,7 +30,7 @@ function ViewTasks() {
         //for jwt token
         if(jwt===null){
             navigate('/login');
-            window.location.reload(true);
+            //window.location.reload(true);
         }
     }, [jwt]);
 
@@ -77,7 +77,7 @@ function ViewTasks() {
         .then((res) => {
             if (res.data.success) {
                 toast.success(`${res.data.message}`);
-                setTimeout(()=>{window.location.reload(true)},1000);
+                //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
         .catch((error) => {
@@ -99,7 +99,7 @@ function ViewTasks() {
                     tasks: ''
                 })
                 toast.info(`${res.data.message}`);
-                setTimeout(()=>{window.location.reload(true)},1000);
+                //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
         .catch((error) => {
@@ -138,7 +138,7 @@ function ViewTasks() {
                                         .then((res) => {
                                             if (res.data.success) {
                                                 toast.error(`${res.data.message}`);
-                                                setTimeout(()=>{window.location.reload(true)},1000);
+                                                //setTimeout(()=>{window.location.reload(true)},1000);
                                             }
                                         })
                                         .catch(error => {

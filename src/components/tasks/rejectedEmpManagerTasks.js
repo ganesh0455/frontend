@@ -33,7 +33,7 @@ function Rejected(){
         console.log("you get into")
         if(jwt===null){
             navigate('/login')
-            window.location.reload(true);
+            //window.location.reload(true);
         }
     }, []);
 
@@ -82,7 +82,7 @@ function Rejected(){
                 })
                 //window.location.reload(true);
                 toast.success(`${res.data.message}`);
-                setTimeout(()=>{window.location.reload(true)},1000);
+                //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
         .catch((error) => {

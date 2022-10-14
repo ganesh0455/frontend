@@ -18,7 +18,7 @@ function Approved(){
         console.log("you get into")
         if(jwt===null){
             navigate('/login')
-            window.location.reload(true);
+            //window.location.reload(true);
         }
     }, []);
 
@@ -39,7 +39,7 @@ function Approved(){
         console.log("jwt",jwt);
         if(jwt===null){
             navigate('/login')
-            window.location.reload(true);   
+            //window.location.reload(true);   
         }
     },[]);
     // useEffect(()=>{

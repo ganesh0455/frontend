@@ -20,7 +20,7 @@ function ManagerEmps(){
         console.log("you get into")
         if(jwt===null){
             navigate('/login')
-            window.location.reload(true);
+            //window.location.reload(true);
         }
     }, [jwt]);
 
