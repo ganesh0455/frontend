@@ -32,7 +32,7 @@ function ManagerUnderAdmin(){
     }, [jwt]);
 
     useEffect(()=>{
-        axios.get('http://localhost:8001/allManagers')
+        axios.get('/allManagers')
         .then((response)=>{
             const resdata=response.data;
             console.log("res=",resdata);
@@ -45,7 +45,7 @@ function ManagerUnderAdmin(){
 
     async function handleManagerTasksOutside(getManagerId)
     {
-        axios.get(`http://localhost:8001/managerPendingTasksAtAdmin?managerId=${getManagerId}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com/managerPendingTasksAtAdmin?managerId=${getManagerId}`)
         .then((response)=>{
             const resdata=response.data;
             console.log("resData=",resdata.data);

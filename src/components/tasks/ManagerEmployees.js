@@ -27,7 +27,7 @@ function ManagerEmps(){
     const gdoId=loggedinUser.gdoId;
     console.log("gdoId=",gdoId);
     useEffect(()=>{
-        axios.get(`http://localhost:8001/managerEmps?gdoId=${gdoId}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${gdoId}`)
         .then((res)=>{
             console.log(res.data.data);
             setManagerEmps(res.data.data);
@@ -39,7 +39,7 @@ function ManagerEmps(){
     
     async function handleEmpOutside(clickedId,role)
     {
-        axios.get(`http://localhost:8001/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
             .then(res => {
             var resdata = res.data;
             console.log("resdata++++", resdata.data);
@@ -124,7 +124,7 @@ function ManagerEmps(){
                                     }
                                     const clickedId=task.id;
                                     const roleName=loggedinUser.role.roleName;
-                                    axios.put(`http://localhost:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
+                                    axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         console.log("ApprovedRes=",res);
                                         handleEmpOutside(empId,getRole);

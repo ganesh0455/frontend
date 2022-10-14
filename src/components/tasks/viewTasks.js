@@ -21,6 +21,7 @@ function ViewTasks() {
     const [needToUpdate, setNeedToUpdate] = useState('');
     const [captureClickedTaskId, setCaptureClickedTaskId] = useState('');
     const [findrole,setRole]=useState('');
+    const [managerName,setManagerName]=useState('');
     const [name, setName] = useState({
         tasks: ''
     })
@@ -47,19 +48,30 @@ function ViewTasks() {
         setRole({
             findrole:loggedinUser.role.roleName
         })
-        axios.get(`http://localhost:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
             .then(res => {
                 var resdata = res.data;
                 setTasks(resdata.data)
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
+        
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
+        .then((response)=>{
+            var ManagerNameResponse=response.data;
+            console.log("ManagerNameResponse.data",ManagerNameResponse.data);
+            const nameOfManager=ManagerNameResponse.data.name;
+            setManagerName(nameOfManager);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
     }, [])
 
     async function handleSubmitAddTask(event) {
         event.preventDefault();
-        axios.post(`http://localhost:8001/addtask?empId=${loggedinUser.id}`, {
+        axios.post(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/addtask?empId=${loggedinUser.id}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
@@ -75,7 +87,7 @@ function ViewTasks() {
 
     async function handleSubmitEditTask(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8001/updateTask?taskId=${capturedId}`, {
+        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
@@ -116,13 +128,13 @@ function ViewTasks() {
                                 let stat;
                                 const role=loggedinUser.role.roleName;
                                 if (role==="employee" && task.Mstatus === "Pending") {
-                                    stat = "Manager"
+                                    stat = `${managerName}`
                                 }
                                 else if (task.Astatus === "Pending") {
                                     stat = "Srinivas"
                                 }
                                 const handleDelete = event => {
-                                    axios.delete(`http://localhost:8001/deleteTask?taskId=${task.id}`)
+                                    axios.delete(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/deleteTask?taskId=${task.id}`)
                                         .then((res) => {
                                             if (res.data.success) {
                                                 toast.error(`${res.data.message}`);

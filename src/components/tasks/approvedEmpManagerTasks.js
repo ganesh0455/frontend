@@ -47,7 +47,7 @@ function Approved(){
     // })
 
     useEffect(()=>{
-        axios.get(`http://localhost:8001/approvedEmpTasks?empId=${loggedinUser.id}&role=${loggedinUser.role.roleName}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/approvedEmpTasks?empId=${loggedinUser.id}&role=${loggedinUser.role.roleName}`)
         .then((response)=>{
             console.log(response)
             const fdata=response.data.data;
