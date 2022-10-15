@@ -27,7 +27,7 @@ function Signup()
         //console.log(event.target.gdo.value)
         //console.log(event.target.project.value)
         //console.log(event.target.role.value)
-        axios.post('http://localhost:8001/signUp',{
+        axios.post('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/signUp',{
             name:event.target.name.value,
             email:event.target.email.value,
             password:event.target.password.value,
