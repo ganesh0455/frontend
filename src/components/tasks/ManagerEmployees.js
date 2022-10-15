@@ -8,7 +8,6 @@ function ManagerEmps(){
     const navigate = useNavigate();
     const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
     const jwt = JSON.parse(localStorage.getItem('jwtToken'));
-    console.log("jwt=",jwt)
     const [ManagerEmps,setManagerEmps]=useState([]);
     const [managerEmpTask,setManagerEmpTask]=useState([]);
     const [capturedId,setCapturedId]=useState('');
@@ -20,16 +19,13 @@ function ManagerEmps(){
         console.log("you get into")
         if(jwt===null){
             navigate('/login')
-            //window.location.reload(true);
         }
     }, [jwt]);
 
     const gdoId=loggedinUser.gdoId;
-    console.log("gdoId=",gdoId);
     useEffect(()=>{
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${gdoId}`)
         .then((res)=>{
-            console.log(res.data.data);
             setManagerEmps(res.data.data);
         })
         .catch((error)=>{
@@ -42,8 +38,6 @@ function ManagerEmps(){
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
             .then(res => {
             var resdata = res.data;
-                console.log("resdata++++", resdata.data);
-                console.log("length=",resdata.data.length)
                 setManagerEmpTask(resdata.data);
                 if(status==='Approved'){
                     toast.success(`You ${status} ${stateEmpName}'s task`);
@@ -83,7 +77,6 @@ function ManagerEmps(){
                         <tbody>
                             {ManagerEmps && ManagerEmps.map((emp,i)=>{
                                 const getRole=loggedinUser.role.roleName;
-                                console.log("getRole",getRole);
                                 const handleEmp=event=>{
                                     setStateEmpName(emp.name);
                                     setEmpId(emp.id);
@@ -115,24 +108,17 @@ function ManagerEmps(){
                         <tbody>
                             {managerEmpTask && managerEmpTask.map((task,i)=>{
                                 const handleApproveReject=event=>{
-                                    console.log("ClickedId=",task.id);
-                                    console.log("loogedin=",loggedinUser.role.roleName);
-                                    console.log("event=",event.target.value);
-                                    //const status='Approved';
                                     let status;
                                     if(event.target.value==='1'){
                                         status='Approved';
-                                        //console.log("approve");
                                     }
                                     else if(event.target.value==='2'){
                                         status='Rejected';
-                                        //console.log("reject");
                                     }
                                     const clickedId=task.id;
                                     const roleName=loggedinUser.role.roleName;
                                     axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
-                                        console.log("ApprovedRes=",res);
                                         handleEmpOutside(empId,getRole,status);
                                     })
                                     .catch((error)=>{

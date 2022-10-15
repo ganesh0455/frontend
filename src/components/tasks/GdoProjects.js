@@ -18,19 +18,15 @@ function GdoProjects() {
         console.log("you get into")
         if (jwt === null) {
             navigate('/login')
-            //window.location.reload(true);
         }
     }, []);
 
     const handleGdo = event => {
-        console.log("clickedButton=", event.target.value);
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com/projectsUnderGdo?gdoId=${event.target.value}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/projectsUnderGdo?gdoId=${event.target.value}`)
             .then((response) => {
-                console.log("res=", response.data.data);
                 setProjectsUnderGdo(response.data.data);
                 setShowEmpProjDiv(false)
                 setShowProjDiv(true);
-                console.log("selectedGdo=", response.data.data[0].gdo.gdoName);
                 setSelectedGdo(response.data.data[0].gdo.gdoName);
             })
             .catch((error) => {
@@ -73,14 +69,12 @@ function GdoProjects() {
                         <tbody>
                             {projectsUnderGdo && projectsUnderGdo.map((projects, i) => {
                                 const handleProject = event => {
-                                    console.log("projClickedId=", projects.id);
                                     const getProjId = projects.id;
                                     setSelectedProject(projects.projName);
                                     setShowEmpProjDiv(true);
                                     axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empsUnderProject?projId=${getProjId}`)
                                         .then((response) => {
                                             const resdata = response.data;
-                                            console.log("resdata=", resdata);
                                             setEmpsUnderProject(resdata.data);
                                         })
                                         .catch((error) => {

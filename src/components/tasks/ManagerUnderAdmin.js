@@ -27,7 +27,6 @@ function ManagerUnderAdmin(){
         console.log("you get into")
         if(jwt===null){
             navigate('/login')
-            //window.location.reload(true);
         }
     }, [jwt]);
 
@@ -35,7 +34,6 @@ function ManagerUnderAdmin(){
         axios.get('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/allManagers')
         .then((response)=>{
             const resdata=response.data;
-            console.log("res=",resdata);
             setAllManagers(resdata.data);
         })
         .catch((error)=>{
@@ -48,7 +46,6 @@ function ManagerUnderAdmin(){
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerPendingTasksAtAdmin?managerId=${getManagerId}`)
         .then((response)=>{
             const resdata=response.data;
-            console.log("resData=",resdata.data);
             setManagerTasks(resdata.data);
         })
         .catch((error)=>{
@@ -61,7 +58,6 @@ function ManagerUnderAdmin(){
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empPendingTasksAtManagerOrAdmin?empId=${empId}&role=${getRole}`)
         .then((response)=>{
             const resdata=response.data;
-            console.log("empTasksPendingAtAdmin",resdata.data);
             setEmpTasksPendingAtAdmin(resdata.data);
             setShowManagerTasks(false);
             setShowEmpTasks(true);
@@ -104,19 +100,15 @@ function ManagerUnderAdmin(){
                                         setShowManagerTasks(true);
                                         setShowEmpTasks(false);
                                         setClickedManagerName(manager.name)
-                                        console.log("clcikedManager=",manager.name);
                                         const getGdoId=manager.gdo.id;
-                                        console.log("ClickedGdoId=",getGdoId);
                                         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${getGdoId}`)
                                         .then((res)=>{
-                                            console.log("empsUnderManager=",res.data.data);
                                             setEmpsUnderManager(res.data.data);
                                         })
                                         .catch((error)=>{
                                             console.log(error)
                                         })
 
-                                        console.log("clickedManId=",manager.id)
                                         const getManagerId=manager.id;
                                         setGetManagerId(getManagerId);
                                         handleManagerTasksOutside(getManagerId);
@@ -144,11 +136,9 @@ function ManagerUnderAdmin(){
                             <tbody>
                                 {EmpsUnderManager && EmpsUnderManager.map((emp,i)=>{
                                     const handleEmpName=event=>{
-                                        //console.log("clickedEmp=",emp.id);
                                         const getEmpId=emp.id;
                                         setGetEmpId(getEmpId);
                                         setClickedEmpName(emp.name);
-                                        //console.log("role",loggedinUser.role.roleName)
                                         const getRoleName=loggedinUser.role.roleName;
                                         setGetRole(getRoleName);
                                         handleEmpNameOutside(getEmpId,getRoleName);
@@ -178,34 +168,25 @@ function ManagerUnderAdmin(){
                         <tbody>
                             {showManagerTasks && managerTasks && managerTasks.map((managerTask,i)=>{
                                 const handleApproveReject=event=>{
-                                    console.log("ClickedManId=",managerTask.id);
-                                    console.log("loogedin=",loggedinUser.role.roleName);
-                                    console.log("event=",event.target.value);
-                                    //const status='Approved';
                                     let status;
                                     if(event.target.value==='1'){
                                         status='Approved';
-                                        //console.log("approve");
                                     }
                                     else if(event.target.value==='2'){
                                         status='Rejected';
-                                        //console.log("reject");
                                     }
                                     const clickedId=managerTask.id;
                                     const roleName=loggedinUser.role.roleName;
                                     const tasksRender=axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         if(res.data.success){
-                                            console.log("ApprovedRes=",res.data);
                                             handleManagerTasksOutside(stateManagerId);
                                             toast.success(`${status}`);
                                         }
-                                        //window.location.reload(true);
                                     })
                                     .catch((error)=>{
                                         console.log(error);
                                     })
-                                    console.log("tasksRender=",tasksRender);
                                 }
                                 return(
                                     <tr>
@@ -220,24 +201,17 @@ function ManagerUnderAdmin(){
                             })}
                             {showEmpTasks && empTasksPendingAtAdmin && empTasksPendingAtAdmin.map((empTasksAtAdmin,i)=>{
                                 const handleApproveReject=event=>{
-                                    console.log("ClickedEmpId=",empTasksAtAdmin.id);
-                                    console.log("loogedin=",loggedinUser.role.roleName);
-                                    console.log("event=",event.target.value);
-                                    //const status='Approved';
                                     let status;
                                     if(event.target.value==='1'){
                                         status='Approved';
-                                        //console.log("approve");
                                     }
                                     else if(event.target.value==='2'){
                                         status='Rejected';
-                                        //console.log("reject");
                                     }
                                     const clickedId=empTasksAtAdmin.id;
                                     const roleName=loggedinUser.role.roleName;
                                     const tasksRender=axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
-                                        console.log("ApprovedRes=",res.data);
                                         handleEmpNameOutside(stateEmpId,stateRole);
                                         if(status==='Rejected'){
                                             toast.warning(`You ${status} the task`);
@@ -245,12 +219,10 @@ function ManagerUnderAdmin(){
                                         if(status==='Approved'){
                                             toast.success(`You ${status} the task`);
                                         }
-                                        //window.location.reload(true);
                                     })
                                     .catch((error)=>{
                                         console.log(error);
                                     })
-                                    console.log("tasksRender=",tasksRender);
                                 }
                                 return(
                                     <tr>

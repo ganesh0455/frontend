@@ -20,9 +20,7 @@ function Rejected(){
     const [task,setTask]=useState({
         textArea:''
     });
-    console.log("needToUpdate====",needToUpdate.needToUpdate);
     const updateThis=needToUpdate.needToUpdate;
-    console.log("updateThis",updateThis)
     const textAreaHandler=event=>{
         setTask({
             [event.target.name]:event.target.value
@@ -41,11 +39,8 @@ function Rejected(){
     async function rejectedEmpORManagerTasks(id,Role){
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
         .then((response)=>{
-            console.log(response)
             const fdata=response.data.data;
-            console.log("fdata=",fdata)
             setRejectedTasks(fdata);
-            console.log("rejectedTasks",rejectedTasks)
         })
         .catch((error)=>{
             console.log(error);
@@ -57,7 +52,6 @@ function Rejected(){
         axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
         .then((response)=>{
             var ManagerNameResponse=response.data;
-            console.log("ManagerNameResponse.data",ManagerNameResponse.data);
             const nameOfManager=ManagerNameResponse.data.name;
             setManagerName(nameOfManager);
         })
@@ -68,9 +62,7 @@ function Rejected(){
         rejectedEmpORManagerTasks(loggedinUser.id,Role);
     },[])
 
-    console.log("captureClickedTaskId======",captureClickedTaskId);
     const capturedId = captureClickedTaskId.captureClickedTaskId;
-    console.log("capturedId",capturedId)
     const handleUpdate=event=>{
         event.preventDefault();
         axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
@@ -80,11 +72,8 @@ function Rejected(){
             console.log(res);
             if (res.data.success) {
                 setEdit(false);
-                console.log("oedit",edit);
-                //window.location.reload(true);
                 toast.success(`${res.data.message}`);
                 rejectedEmpORManagerTasks(loggedinUser.id,Role);
-                //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
         .catch((error) => {
@@ -126,17 +115,11 @@ function Rejected(){
                                     stat = "Srinivas"
                                 }
                                 const handleEdit=event=>{
-                                    console.log("bedit",edit);
-                                    setEdit({
-                                        edit:true
-                                    })
-                                    console.log("aedit",edit);
+                                    setEdit(true);
                                     var clickedTask=task.tasks;
-                                    console.log("clickedTask",clickedTask);
                                     setNeedToUpdate({
                                         needToUpdate:clickedTask
                                     })
-                                    console.log("clicked taskId=",task.id)
                                     setCaptureClickedTaskId({
                                         captureClickedTaskId:task.id
                                     })

@@ -24,9 +24,6 @@ function Signup()
 
     const handleSubmit=event=>{
         event.preventDefault();
-        //console.log(event.target.gdo.value)
-        //console.log(event.target.project.value)
-        //console.log(event.target.role.value)
         axios.post('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/signUp',{
             name:event.target.name.value,
             email:event.target.email.value,
@@ -44,7 +41,7 @@ function Signup()
         })
         .catch((err)=>{
             console.log("err=",err.response.data)
-            alert(err.response.data.message);
+            toast.error(err.response.data.message);
         })
     }
     return(
@@ -59,7 +56,6 @@ function Signup()
                             type="text"
                             name="name"
                             value={name.name}
-                            //onChange={this.handleName}
                             onChange={changeHandler}
                             placeholder="Enter your Name..."
                         />
@@ -69,7 +65,6 @@ function Signup()
                             name="email"
                             required="true"
                             value={name.email}
-                            //onChange={this.handleEmail}
                             onChange={changeHandler}
                             placeholder="Enter the Email..."
                         />
@@ -79,7 +74,6 @@ function Signup()
                             name="password"
                             required="true"
                             value={name.password}
-                            //onChange={this.handlePassword}
                             onChange={changeHandler}
                             placeholder="Enter password..."
                             />

@@ -15,7 +15,6 @@ import RejectedTasks from './components/tasks/rejectedEmpManagerTasks';
 import ManagerEmps from './components/tasks/ManagerEmployees';
 import ManagerUnderAdmin from './components/tasks/ManagerUnderAdmin';
 import GdoProjects from './components/tasks/GdoProjects';
-import BackImg from './components/login/backgroundImg';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -34,7 +33,6 @@ root.render(
           <Route path="/ManagerEmployees" element={<ManagerEmps />}></Route>
           <Route path="/ManagerUnderAdmin" element={<ManagerUnderAdmin />}></Route>
           <Route path="/GdoProjects" element={<GdoProjects />}></Route>
-          <Route path='/backImg' element={<BackImg />}></Route>
         </Routes>
     </BrowserRouter>
   </React.StrictMode>
