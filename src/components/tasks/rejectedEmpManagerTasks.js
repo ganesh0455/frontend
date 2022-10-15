@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Rejected(){
     const navigate = useNavigate();
     const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
+    const Role=loggedinUser.role.roleName;
     const jwt = JSON.parse(localStorage.getItem('jwtToken'));
     const [rejectedTasks,setRejectedTasks]=useState([]);
     const [edit, setEdit] = useState(false);
@@ -37,20 +38,8 @@ function Rejected(){
         }
     }, []);
 
-    useEffect(()=>{
-        const gdoId=loggedinUser.gdoId;
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
-        .then((response)=>{
-            var ManagerNameResponse=response.data;
-            console.log("ManagerNameResponse.data",ManagerNameResponse.data);
-            const nameOfManager=ManagerNameResponse.data.name;
-            setManagerName(nameOfManager);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/rejectedEmpTasks?empId=${loggedinUser.id}&role=${loggedinUser.role.roleName}`)
+    async function rejectedEmpORManagerTasks(id,Role){
+        axios.get(`http://localhost:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
         .then((response)=>{
             console.log(response)
             const fdata=response.data.data;
@@ -61,6 +50,22 @@ function Rejected(){
         .catch((error)=>{
             console.log(error);
         })
+    }
+
+    useEffect(()=>{
+        const gdoId=loggedinUser.gdoId;
+        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
+        .then((response)=>{
+            var ManagerNameResponse=response.data;
+            console.log("ManagerNameResponse.data",ManagerNameResponse.data);
+            const nameOfManager=ManagerNameResponse.data.name;
+            setManagerName(nameOfManager);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+        
+        rejectedEmpORManagerTasks(loggedinUser.id,Role);
     },[])
 
     console.log("captureClickedTaskId======",captureClickedTaskId);
@@ -68,20 +73,17 @@ function Rejected(){
     console.log("capturedId",capturedId)
     const handleUpdate=event=>{
         event.preventDefault();
-        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
+        axios.put(`http://localhost:8001/updateTask?taskId=${capturedId}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
             console.log(res);
             if (res.data.success) {
-                setEdit({
-                    edit:false
-                })
-                setTask({
-                    textArea:''
-                })
+                setEdit(false);
+                console.log("oedit",edit);
                 //window.location.reload(true);
                 toast.success(`${res.data.message}`);
+                rejectedEmpORManagerTasks(loggedinUser.id,Role);
                 //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
@@ -124,9 +126,11 @@ function Rejected(){
                                     stat = "Srinivas"
                                 }
                                 const handleEdit=event=>{
+                                    console.log("bedit",edit);
                                     setEdit({
                                         edit:true
                                     })
+                                    console.log("aedit",edit);
                                     var clickedTask=task.tasks;
                                     console.log("clickedTask",clickedTask);
                                     setNeedToUpdate({

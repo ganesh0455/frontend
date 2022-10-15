@@ -27,7 +27,7 @@ function ManagerEmps(){
     const gdoId=loggedinUser.gdoId;
     console.log("gdoId=",gdoId);
     useEffect(()=>{
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${gdoId}`)
+        axios.get(`http://localhost:8001/managerEmps?gdoId=${gdoId}`)
         .then((res)=>{
             console.log(res.data.data);
             setManagerEmps(res.data.data);
@@ -37,14 +37,20 @@ function ManagerEmps(){
         })
     },[])
     
-    async function handleEmpOutside(clickedId,role)
+    async function handleEmpOutside(clickedId,role,status)
     {
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
+        axios.get(`http://localhost:8001/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
             .then(res => {
             var resdata = res.data;
-            console.log("resdata++++", resdata.data);
-            console.log("length=",resdata.data.length)
+                console.log("resdata++++", resdata.data);
+                console.log("length=",resdata.data.length)
                 setManagerEmpTask(resdata.data);
+                if(status==='Approved'){
+                    toast.success(`You ${status} ${stateEmpName}'s task`);
+                }
+                else if(status==='Rejected'){
+                    toast.warning(`You ${status} ${stateEmpName}'s task`);
+                }
             })
             .catch(err => {
             console.log(err);
@@ -124,10 +130,10 @@ function ManagerEmps(){
                                     }
                                     const clickedId=task.id;
                                     const roleName=loggedinUser.role.roleName;
-                                    axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
+                                    axios.put(`http://localhost:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         console.log("ApprovedRes=",res);
-                                        handleEmpOutside(empId,getRole);
+                                        handleEmpOutside(empId,getRole,status);
                                     })
                                     .catch((error)=>{
                                         console.log(error);

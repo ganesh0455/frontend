@@ -17,7 +17,7 @@ function ViewTasks() {
     const Role=loggedinUser.role.roleName;
     const jwt = JSON.parse(localStorage.getItem('jwtToken'));
     const [tasks, setTasks] = useState([]);
-    const [edit, setEdit] = useState(false);
+    const [editTask, setEditTask] = useState(false);
     const [needToUpdate, setNeedToUpdate] = useState('');
     const [captureClickedTaskId, setCaptureClickedTaskId] = useState('');
     const [findrole,setRole]=useState('');
@@ -30,34 +30,38 @@ function ViewTasks() {
         //for jwt token
         if(jwt===null){
             navigate('/login');
-            //window.location.reload(true);
         }
     }, [jwt]);
 
-    const capturedId = captureClickedTaskId.captureClickedTaskId;
+    
     const textareaHandler = event => {
         setName({
             [event.target.name]: event.target.value
         })
     }
 
-    useEffect(() => {
-        const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
-        const getRole=loggedinUser.role.roleName;
-        const gdoId=loggedinUser.gdoId;
-        setRole({
-            findrole:loggedinUser.role.roleName
-        })
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
+    async function viewYourTasks(loggedinUser,getRole)
+    {
+        axios.get(`http://localhost:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
             .then(res => {
                 var resdata = res.data;
-                setTasks(resdata.data)
+                setTasks(resdata.data);
+                setName({
+                    tasks:''
+                })
             })
             .catch(err => {
                 console.log(err);
             });
-        
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
+    }
+
+    useEffect(() => {
+        const gdoId=loggedinUser.gdoId;
+        setRole({
+            findrole:loggedinUser.role.roleName
+        })
+        viewYourTasks(loggedinUser,Role);
+        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
         .then((response)=>{
             var ManagerNameResponse=response.data;
             console.log("ManagerNameResponse.data",ManagerNameResponse.data);
@@ -71,13 +75,13 @@ function ViewTasks() {
 
     async function handleSubmitAddTask(event) {
         event.preventDefault();
-        axios.post(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/addtask?empId=${loggedinUser.id}`, {
+        axios.post(`http://localhost:8001/addtask?empId=${loggedinUser.id}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
             if (res.data.success) {
                 toast.success(`${res.data.message}`);
-                //setTimeout(()=>{window.location.reload(true)},1000);
+                viewYourTasks(loggedinUser,Role);
             }
         })
         .catch((error) => {
@@ -85,21 +89,20 @@ function ViewTasks() {
         })
     }
 
+    const TaskId = captureClickedTaskId.captureClickedTaskId;
     async function handleSubmitEditTask(event) {
         event.preventDefault();
-        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
+        axios.put(`http://localhost:8001/updateTask?taskId=${TaskId}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
             if (res.data.success) {
-                setEdit({
-                    edit: false
-                })
+                viewYourTasks(loggedinUser,Role);
+                setEditTask(false);
                 setName({
                     tasks: ''
                 })
                 toast.info(`${res.data.message}`);
-                //setTimeout(()=>{window.location.reload(true)},1000);
             }
         })
         .catch((error) => {
@@ -134,10 +137,11 @@ function ViewTasks() {
                                     stat = "Srinivas"
                                 }
                                 const handleDelete = event => {
-                                    axios.delete(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/deleteTask?taskId=${task.id}`)
+                                    axios.delete(`http://localhost:8001/deleteTask?taskId=${task.id}`)
                                         .then((res) => {
                                             if (res.data.success) {
                                                 toast.error(`${res.data.message}`);
+                                                viewYourTasks(loggedinUser,Role);
                                                 //setTimeout(()=>{window.location.reload(true)},1000);
                                             }
                                         })
@@ -146,8 +150,8 @@ function ViewTasks() {
                                         })
                                 }
                                 const handleEdit = event => {
-                                    setEdit({
-                                        edit: true
+                                    setEditTask({
+                                        editTask: true
                                     });
                                     var clickedTask = task.tasks;
                                     setNeedToUpdate({
@@ -164,7 +168,7 @@ function ViewTasks() {
                                 {
                                     return (
                                         <tr>
-                                            <td>{task.tasks}</td>
+                                            <td style={{width:"180px"}}>{task.tasks}</td>
                                             <td>{task.date}</td>
                                             <td>{stat}</td>
                                             <tr>
@@ -191,7 +195,7 @@ function ViewTasks() {
                     </table>
                 </ul>
             </div>
-            {edit ? <div>
+            {editTask? <div>
                 <form style={{ display: "flex", marginTop: "10px", marginLeft: "500px" }} onSubmit={handleSubmitEditTask}>
                     <textarea placeholder="Update your task"
                         rows="3"

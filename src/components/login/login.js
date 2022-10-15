@@ -22,7 +22,7 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/login", {
+        axios.post("http://localhost:8001/login", {
             email: event.target.email.value,
             password: event.target.password.value
         })
