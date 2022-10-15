@@ -42,7 +42,7 @@ function ViewTasks() {
 
     async function viewYourTasks(loggedinUser,getRole)
     {
-        axios.get(`http://localhost:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
             .then(res => {
                 var resdata = res.data;
                 setTasks(resdata.data);
@@ -61,7 +61,7 @@ function ViewTasks() {
             findrole:loggedinUser.role.roleName
         })
         viewYourTasks(loggedinUser,Role);
-        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
         .then((response)=>{
             var ManagerNameResponse=response.data;
             console.log("ManagerNameResponse.data",ManagerNameResponse.data);
@@ -75,7 +75,7 @@ function ViewTasks() {
 
     async function handleSubmitAddTask(event) {
         event.preventDefault();
-        axios.post(`http://localhost:8001/addtask?empId=${loggedinUser.id}`, {
+        axios.post(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/addtask?empId=${loggedinUser.id}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
@@ -92,7 +92,7 @@ function ViewTasks() {
     const TaskId = captureClickedTaskId.captureClickedTaskId;
     async function handleSubmitEditTask(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8001/updateTask?taskId=${TaskId}`, {
+        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${TaskId}`, {
             tasks: event.target.textArea.value
         })
         .then((res) => {
@@ -137,7 +137,7 @@ function ViewTasks() {
                                     stat = "Srinivas"
                                 }
                                 const handleDelete = event => {
-                                    axios.delete(`http://localhost:8001/deleteTask?taskId=${task.id}`)
+                                    axios.delete(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/deleteTask?taskId=${task.id}`)
                                         .then((res) => {
                                             if (res.data.success) {
                                                 toast.error(`${res.data.message}`);

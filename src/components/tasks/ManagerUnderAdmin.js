@@ -32,7 +32,7 @@ function ManagerUnderAdmin(){
     }, [jwt]);
 
     useEffect(()=>{
-        axios.get('http://localhost:8001/allManagers')
+        axios.get('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/allManagers')
         .then((response)=>{
             const resdata=response.data;
             console.log("res=",resdata);
@@ -45,7 +45,7 @@ function ManagerUnderAdmin(){
 
     async function handleManagerTasksOutside(getManagerId)
     {
-        axios.get(`http://localhost:8001/managerPendingTasksAtAdmin?managerId=${getManagerId}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerPendingTasksAtAdmin?managerId=${getManagerId}`)
         .then((response)=>{
             const resdata=response.data;
             console.log("resData=",resdata.data);
@@ -58,7 +58,7 @@ function ManagerUnderAdmin(){
 
     async function handleEmpNameOutside(empId,getRole)
     {
-        axios.get(`http://localhost:8001/empPendingTasksAtManagerOrAdmin?empId=${empId}&role=${getRole}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empPendingTasksAtManagerOrAdmin?empId=${empId}&role=${getRole}`)
         .then((response)=>{
             const resdata=response.data;
             console.log("empTasksPendingAtAdmin",resdata.data);
@@ -107,7 +107,7 @@ function ManagerUnderAdmin(){
                                         console.log("clcikedManager=",manager.name);
                                         const getGdoId=manager.gdo.id;
                                         console.log("ClickedGdoId=",getGdoId);
-                                        axios.get(`http://localhost:8001/managerEmps?gdoId=${getGdoId}`)
+                                        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${getGdoId}`)
                                         .then((res)=>{
                                             console.log("empsUnderManager=",res.data.data);
                                             setEmpsUnderManager(res.data.data);
@@ -193,7 +193,7 @@ function ManagerUnderAdmin(){
                                     }
                                     const clickedId=managerTask.id;
                                     const roleName=loggedinUser.role.roleName;
-                                    const tasksRender=axios.put(`http://localhost:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
+                                    const tasksRender=axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         if(res.data.success){
                                             console.log("ApprovedRes=",res.data);
@@ -235,7 +235,7 @@ function ManagerUnderAdmin(){
                                     }
                                     const clickedId=empTasksAtAdmin.id;
                                     const roleName=loggedinUser.role.roleName;
-                                    const tasksRender=axios.put(`http://localhost:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
+                                    const tasksRender=axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         console.log("ApprovedRes=",res.data);
                                         handleEmpNameOutside(stateEmpId,stateRole);
