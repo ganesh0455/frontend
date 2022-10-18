@@ -7,106 +7,102 @@ import '../styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Rejected(){
+function Rejected() {
     const navigate = useNavigate();
     const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
-    const Role=loggedinUser.role.roleName;
+    const Role = loggedinUser.role.roleName;
     const jwt = JSON.parse(localStorage.getItem('jwtToken'));
-    const [rejectedTasks,setRejectedTasks]=useState([]);
+    const [rejectedTasks, setRejectedTasks] = useState([]);
     const [edit, setEdit] = useState(false);
-    const [needToUpdate,setNeedToUpdate]=useState('');
+    const [needToUpdate, setNeedToUpdate] = useState('');
     const [captureClickedTaskId, setCaptureClickedTaskId] = useState('');
-    const [managerName,setManagerName]=useState('');
-    const [task,setTask]=useState({
-        textArea:''
+    const [managerName, setManagerName] = useState('');
+    const [task, setTask] = useState({
+        textArea: ''
     });
-    const updateThis=needToUpdate.needToUpdate;
-    const textAreaHandler=event=>{
+    const updateThis = needToUpdate.needToUpdate;
+    const textAreaHandler = event => {
         setTask({
-            [event.target.name]:event.target.value
+            [event.target.name]: event.target.value
         })
     }
 
     useEffect(() => {
         //for jwt token
         console.log("you get into")
-        if(jwt===null){
+        if (jwt === null) {
             navigate('/login')
             //window.location.reload(true);
         }
     }, []);
 
-    async function rejectedEmpORManagerTasks(id,Role){
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
-        .then((response)=>{
-            const fdata=response.data.data;
-            setRejectedTasks(fdata);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+    async function rejectedEmpORManagerTasks(id, Role) {
+        axios.get(`http://localhost:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
+            .then((response) => {
+                const fdata = response.data.data;
+                setRejectedTasks(fdata);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
-    useEffect(()=>{
-        const gdoId=loggedinUser.gdoId;
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
-        .then((response)=>{
-            var ManagerNameResponse=response.data;
-            const nameOfManager=ManagerNameResponse.data.name;
-            setManagerName(nameOfManager);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-        
-        rejectedEmpORManagerTasks(loggedinUser.id,Role);
-    },[])
+    useEffect(() => {
+        const gdoId = loggedinUser.gdoId;
+        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
+            .then((response) => {
+                var ManagerNameResponse = response.data;
+                const nameOfManager = ManagerNameResponse.data.name;
+                setManagerName(nameOfManager);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        rejectedEmpORManagerTasks(loggedinUser.id, Role);
+    }, [])
 
     const capturedId = captureClickedTaskId.captureClickedTaskId;
-    const handleUpdate=event=>{
+    const handleUpdate = event => {
         event.preventDefault();
-        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
+        axios.put(`http://localhost:8001/updateTask?taskId=${capturedId}`, {
             tasks: event.target.textArea.value
         })
-        .then((res) => {
-            console.log(res);
-            if (res.data.success) {
-                setEdit(false);
-                toast.success(`${res.data.message}`);
-                rejectedEmpORManagerTasks(loggedinUser.id,Role);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                console.log(res);
+                if (res.data.success) {
+                    rejectedEmpORManagerTasks(loggedinUser.id, Role);
+                    setEdit(false);
+                    toast.success(`${res.data.message}`);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
-    return(
-        <div style={{backgroundColor:"#B9DCEC"}}>
-            <nav className="navbar navbar-inverse" style={{height:"53px"}}>
-                <div className="container-fluid">
-                    <ul className="nav navbar-nav">
-                    <li><a style={{color:"#B9DCEC",cursor:"pointer"}} onClick={()=>{navigate('/viewTasks')}}>Home</a></li>
-                    <li><a style={{color:"rgb(114, 228, 114)",cursor:"pointer"}} onClick={() => {navigate('/approvedTasks')}}>Approved Tasks</a></li>
-                    <li><a style={{pointerEvents:"none",marginLeft:"600px",color:"white"}}>{loggedinUser?.name}</a></li>
-                    <li><a style={{pointerEvents:"none",color:"white"}}>{loggedinUser.gdo.gdoName}</a></li>
-                    <li><a style={{pointerEvents:"none",color:"white"}}>{loggedinUser.project.projName}</a></li>
-                    <li><a style={{cursor:"pointer",color:"red"}} onClick={() => { localStorage.clear(); navigate('/login')}}>Logout</a></li>
-                    </ul>
-                </div>
-            </nav>
-            <div className='m-5 card p-3  mx-auto sh' style={{ height: '500px', width: '750px', boxShadow: '0 0 2px 2px', marginLeft: '300px', marginTop: "10px", borderRadius: '10px', overflow: "scroll",backgroundColor:"#E4E4E4"}}>
-                <ul>
-                    <h3 style={{ textAlign: "center",color:"red" }}>Rejected Tasks</h3>
-                    <div style={{marginLeft:"20px"}}><table className="table table-hover">
-                        <thead style={{fontSize:"18px"}}>
+    return (
+        <div style={{ backgroundColor: "#1C2340" }}>
+            <div className="Eheader">
+                <div className="Home" onClick={() => { navigate('/viewTasks') }}>Home</div>
+                <div className="RejectPageApproveName" onClick={() => { navigate('/approvedTasks') }}>Approved Tasks</div>
+                <div className="logedUserName">{loggedinUser?.name}</div>
+                <div className="gdoName">{loggedinUser.gdo.gdoName}</div>
+                <div className="projName">{loggedinUser.project.projName}</div>
+                <div className="logout" onClick={() => { localStorage.clear(); navigate('/login') }}>Logout</div>
+            </div>
+            <div className="ViewTasksMainDiv">
+                <div className="viewTasksDiv">
+                    <p style={{ textAlign: "center", color: "red" ,fontSize:"24px"}}>Rejected Tasks</p>
+                    <table>
+                        <thead>
                             <tr>
-                                <th>Task</th>
-                                <th>Date</th>
-                                <th>Rejected By</th>
+                                <th className="tableHead">Task</th>
+                                <th className="tableHead">Date</th>
+                                <th className="tableHead">Rejected By</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {rejectedTasks && rejectedTasks.map((task,i)=>{
+                            {rejectedTasks && rejectedTasks.map((task, i) => {
                                 let stat;
                                 if (task.Mstatus === "Rejected") {
                                     stat = `${managerName}`
@@ -114,51 +110,51 @@ function Rejected(){
                                 else if (task.Astatus === "Rejected") {
                                     stat = "Srinivas"
                                 }
-                                const handleEdit=event=>{
+                                const handleEdit = event => {
                                     setEdit(true);
-                                    var clickedTask=task.tasks;
+                                    var clickedTask = task.tasks;
                                     setNeedToUpdate({
-                                        needToUpdate:clickedTask
+                                        needToUpdate: clickedTask
                                     })
                                     setCaptureClickedTaskId({
-                                        captureClickedTaskId:task.id
+                                        captureClickedTaskId: task.id
                                     })
                                 }
                                 const onChangeEdit = event => {
                                     [event.target.name] = event.target.value
                                 }
-                                return(
-                                    <tr>
-                                        <td>{task.tasks}</td>
-                                        <td>{task.date}</td>
-                                        <td>{stat}</td>
+                                return (
+                                    <tr className="Row">
+                                        <td className="tableData">{task.tasks}</td>
+                                        <td className="tableData">{task.date}</td>
+                                        <td className="tableData">{stat}</td>
                                         <tr>
-                                            <button className="btn btn-info" onClick={handleEdit} onChange={onChangeEdit}>Edit</button>
+                                            <button className="Edit" onClick={handleEdit} onChange={onChangeEdit}>Edit</button>
                                         </tr>
                                     </tr>
                                 );
                             })}
                         </tbody>
-                    </table></div>
-                </ul>
+                    </table>
+                </div>
             </div>
-            {edit?<div>
-                <form style={{ display: "flex", marginTop: "10px", marginLeft: "500px" }} onSubmit={handleUpdate}>
-                    <textarea placeholder="Update your task"
-                        rows="3"
-                        cols="50"
-                        name="textArea"
-                        required="true"
-                        type="text"
-                        onChange={textAreaHandler}
-                    >
-                        {updateThis}
-                    </textarea>
-                    <button type="submit" className="btn btn-success" style={{ height: "35px", marginTop: "15px", marginLeft: "15px" }}>Update</button>
-                </form>
-            </div>:
-            <div style={{height:"66px",display: "flex", marginTop: "10px", marginLeft: "500px" }}></div>}
-            <ToastContainer autoClose={500}/>
+            {edit ? <div>
+            <form onSubmit={handleUpdate}>
+                <textarea className="textAreaDiv"
+                    placeholder="Update your task"
+                    rows="2"
+                    cols="40"
+                    name="textArea"
+                    required="true"
+                    type="text"
+                    onChange={textAreaHandler}
+                >
+                    {needToUpdate.needToUpdate}
+                </textarea>
+                <button type="submit" className="AddUpdateButton">Update</button>
+            </form>
+        </div>:<></>}
+            <ToastContainer autoClose={500} />
         </div>
     );
 }

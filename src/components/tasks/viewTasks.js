@@ -1,5 +1,5 @@
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,40 +14,39 @@ import 'react-toastify/dist/ReactToastify.css';
 function ViewTasks() {
     const navigate = useNavigate();
     const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
-    const Role=loggedinUser.role.roleName;
+    const Role = loggedinUser.role.roleName;
     const jwt = JSON.parse(localStorage.getItem('jwtToken'));
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(false);
     const [needToUpdate, setNeedToUpdate] = useState('');
     const [captureClickedTaskId, setCaptureClickedTaskId] = useState('');
-    const [findrole,setRole]=useState('');
-    const [managerName,setManagerName]=useState('');
+    const [findrole, setRole] = useState('');
+    const [managerName, setManagerName] = useState('');
     const [name, setName] = useState({
         tasks: ''
     })
-    
+
     useEffect(() => {
         //for jwt token
-        if(jwt===null){
+        if (jwt === null) {
             navigate('/login');
         }
-    }, [jwt]);
+    }, [jwt,captureClickedTaskId]);
 
-    
+
     const textareaHandler = event => {
         setName({
             [event.target.name]: event.target.value
         })
     }
 
-    async function viewYourTasks(loggedinUser,getRole)
-    {
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
+    async function viewYourTasks(loggedinUser, getRole) {
+        axios.get(`http://localhost:8001/viewtask?empId=${loggedinUser.id}&roleName=${getRole}`)
             .then(res => {
                 var resdata = res.data;
                 setTasks(resdata.data);
                 setName({
-                    tasks:''
+                    tasks: ''
                 })
             })
             .catch(err => {
@@ -56,91 +55,91 @@ function ViewTasks() {
     }
 
     useEffect(() => {
-        const gdoId=loggedinUser.gdoId;
+        const gdoId = loggedinUser.gdoId;
         setRole({
-            findrole:loggedinUser.role.roleName
+            findrole: loggedinUser.role.roleName
         })
-        viewYourTasks(loggedinUser,Role);
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
-        .then((response)=>{
-            var ManagerNameResponse=response.data;
-            const nameOfManager=ManagerNameResponse.data.name;
-            setManagerName(nameOfManager);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+        viewYourTasks(loggedinUser, Role);
+        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
+            .then((response) => {
+                var ManagerNameResponse = response.data;
+                const nameOfManager = ManagerNameResponse.data.name;
+                setManagerName(nameOfManager);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }, [])
 
     async function handleSubmitAddTask(event) {
         event.preventDefault();
-        axios.post(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/addtask?empId=${loggedinUser.id}`, {
+        axios.post(`http://localhost:8001/addtask?empId=${loggedinUser.id}`, {
             tasks: event.target.textArea.value
         })
-        .then((res) => {
-            if (res.data.success) {
-                toast.success(`${res.data.message}`);
-                viewYourTasks(loggedinUser,Role);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                if (res.data.success) {
+                    toast.success(`${res.data.message}`);
+                    viewYourTasks(loggedinUser, Role);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const TaskId = captureClickedTaskId.captureClickedTaskId;
     async function handleSubmitEditTask(event) {
         event.preventDefault();
-        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${TaskId}`, {
+        axios.put(`http://localhost:8001/updateTask?taskId=${TaskId}`, {
             tasks: event.target.textArea.value
         })
-        .then((res) => {
-            if (res.data.success) {
-                viewYourTasks(loggedinUser,Role);
-                setEditTask(false);
-                setName({
-                    tasks: ''
-                })
-                toast.info(`${res.data.message}`);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                if (res.data.success) {
+                    viewYourTasks(loggedinUser, Role);
+                    setEditTask(false);
+                    setName({
+                        tasks: ''
+                    })
+                    toast.info(`${res.data.message}`);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
-        <div style={{backgroundColor:"#B9DCEC"}}>
-            {Role==='employee' && <EHeaders />}
-            {Role==='manager' && <MHeaders />}
-            {Role==='admin' && <AHeaders />}
-            <div className='m-5 card p-3  mx-auto sh' style={{ height: '500px', width: '850px', boxShadow: '0 0 2px 2px', marginLeft: '250px', marginTop: "10px", borderRadius: '10px', overflow: "scroll",backgroundColor:"#E4E4E4"}}>
-                <ul>
-                    <h3 style={{ textAlign: "center" }}>Your Daily Tasks</h3>
-                    <table className="table table-hover">
-                        <thead style={{fontSize:"18px",textAlign:"center"}}>
+        <div style={{ backgroundColor: "#1C2340" }}>
+            {Role === 'employee' && <EHeaders />}
+            {Role === 'manager' && <MHeaders />}
+            {Role === 'admin' && <AHeaders />}
+            <div className="ViewTasksMainDiv">
+                <div className="viewTasksDiv">
+                    <p style={{color:"yellow",fontSize:"20px"}}>Your Daily Tasks</p>
+                    <table>
+                        <thead>
                             <tr>
-                                <th>Task</th>
-                                <th>Date</th>
-                                {Role==='admin'?<></>:<th>Approval Waiting AT</th>}
+                                <th className="tableHead">Task</th>
+                                <th className="tableHead">Date</th>
+                                {Role === 'admin' ? <></> : <th className="tableHead">Approval Waiting AT</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {tasks && tasks.map((task, i) => {
                                 let stat;
-                                const role=loggedinUser.role.roleName;
-                                if (role==="employee" && task.Mstatus === "Pending") {
+                                const role = loggedinUser.role.roleName;
+                                if (role === "employee" && task.Mstatus === "Pending") {
                                     stat = `${managerName}`
                                 }
                                 else if (task.Astatus === "Pending") {
                                     stat = "Srinivas"
                                 }
                                 const handleDelete = event => {
-                                    axios.delete(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/deleteTask?taskId=${task.id}`)
+                                    axios.delete(`http://localhost:8001/deleteTask?taskId=${task.id}`)
                                         .then((res) => {
                                             if (res.data.success) {
                                                 toast.error(`${res.data.message}`);
-                                                viewYourTasks(loggedinUser,Role);
+                                                viewYourTasks(loggedinUser, Role);
                                                 //setTimeout(()=>{window.location.reload(true)},1000);
                                             }
                                         })
@@ -163,28 +162,27 @@ function ViewTasks() {
                                 const onChangeEdit = event => {
                                     [event.target.name] = event.target.value;
                                 }
-                                if(Role==='manager' || Role==='employee')
-                                {
+                                if (Role === 'manager' || Role === 'employee') {
                                     return (
-                                        <tr>
-                                            <td style={{width:"180px"}}>{task.tasks}</td>
-                                            <td>{task.date}</td>
-                                            <td>{stat}</td>
+                                        <tr className="Row">
+                                            <td className="tableData">{task.tasks}</td>
+                                            <td className="tableData">{task.date}</td>
+                                            <td className="tableData">{stat}</td>
                                             <tr>
-                                                <button className="btn btn-info" name="edit" onClick={handleEdit} onChange={onChangeEdit}>Edit</button>
-                                                <button style={{ marginLeft: "5px" }} className="btn btn-danger" onClick={handleDelete}>Delete</button>
+                                                <button name="edit" onClick={handleEdit} onChange={onChangeEdit} className="Edit">Edit</button>
+                                                <button onClick={handleDelete} className="Delete">Delete</button>
                                             </tr>
                                         </tr>
                                     );
                                 }
-                                else{
+                                else {
                                     return (
-                                        <tr>
-                                            <td>{task.tasks}</td>
-                                            <td>{task.date}</td>
+                                        <tr className="Row">
+                                            <td className="tableData">{task.tasks}</td>
+                                            <td className="tableData">{task.date}</td>
                                             <tr>
-                                                <button className="btn btn-info" name="edit" onClick={handleEdit} onChange={onChangeEdit}>Edit</button>
-                                                <button style={{ marginLeft: "5px" }} className="btn btn-danger" onClick={handleDelete}>Delete</button>
+                                                <button name="edit" onClick={handleEdit} onChange={onChangeEdit} className="Edit">Edit</button>
+                                                <button onClick={handleDelete} className="Delete">Delete</button>
                                             </tr>
                                         </tr>
                                     );
@@ -192,36 +190,40 @@ function ViewTasks() {
                             })}
                         </tbody>
                     </table>
-                </ul>
-            </div>
-            {editTask? <div>
-                <form style={{ display: "flex", marginTop: "10px", marginLeft: "500px" }} onSubmit={handleSubmitEditTask}>
-                    <textarea placeholder="Update your task"
-                        rows="3"
-                        cols="50"
+                </div>
+                {editTask ? 
+                <div>
+                    <form onSubmit={handleSubmitEditTask}>
+                        <textarea className="textAreaDiv"
+                            placeholder="Update your task"
+                            rows="2"
+                            cols="40"
+                            name="textArea"
+                            required="true"
+                            type="text"
+                            onChange={textareaHandler}
+                        >
+                            {needToUpdate.needToUpdate}
+                        </textarea>
+                        <button type="submit" className="AddUpdateButton">Update</button>
+                    </form>
+                </div> : 
+                <form onSubmit={handleSubmitAddTask}>
+                    <textarea className="textAreaDiv"
+                        placeholder="Enter your task"   x
+                        rows="2"
+                        cols="40"
                         name="textArea"
                         required="true"
                         type="text"
+                        backgroundColor="green"
+                        value={name.tasks}
                         onChange={textareaHandler}
                     >
-                        {needToUpdate.needToUpdate}
                     </textarea>
-                    <button type="submit" className="btn btn-success" style={{ height: "35px", marginTop: "15px", marginLeft: "15px" }}>Update</button>
-                </form>
-            </div> : <form className="textArea" style={{ display: "flex", marginTop: "10px", marginLeft: "500px" }} onSubmit={handleSubmitAddTask}>
-                <textarea placeholder="Enter your task"
-                    rows="3"
-                    cols="50"
-                    name="textArea"
-                    required="true"
-                    type="text"
-                    backgroundColor="green"
-                    value={name.tasks}
-                    onChange={textareaHandler}
-                >
-                </textarea>
-                <button type="submit" className="btn btn-success" style={{ height: "35px", marginTop: "15px", marginLeft: "15px" }}>Add Task</button>
-            </form>}
+                    <button type="submit" className="AddUpdateButton">Add Task</button>
+                </form>}
+            </div>
             <ToastContainer autoClose={500} />
         </div>
     );

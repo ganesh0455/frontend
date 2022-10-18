@@ -24,7 +24,7 @@ function Signup()
 
     const handleSubmit=event=>{
         event.preventDefault();
-        axios.post('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/signUp',{
+        axios.post('http://localhost:8001/signUp',{
             name:event.target.name.value,
             email:event.target.email.value,
             password:event.target.password.value,
@@ -45,11 +45,11 @@ function Signup()
         })
     }
     return(
-        <div style={{backgroundColor:"#1C2340",minHeight:"100vh",display:"flex"}}>
-            <div className='m-5 card p-3  mx-auto sh' style={{ width: '380px',boxShadow:'0 0 2px 2px',height:"400px",borderRadius:'10px',marginLeft:'500px',marginTop:'90px',backgroundColor:"#FED78C"}}>
+        <div className="mainDiv">
+            <div className='loginDiv'>
                 <form onSubmit={handleSubmit} style={{textAlign:"center"}}>
                     <div>
-                        <b><p style={{fontSize:'20px'}}>Sign Up</p></b>
+                        <b><p style={{fontSize:'18px'}}>Sign Up</p></b>
                         <input className='form-control mt-2'
                             style={{width:"270px",marginLeft:"50px",marginBottom:'10px'}}
                             required="true"
@@ -77,14 +77,14 @@ function Signup()
                             onChange={changeHandler}
                             placeholder="Enter password..."
                             />
-                        <select name='gdo' value={name.gdo} class="btn btn-light" style={{marginTop:"30px"}}>
+                        <select name='gdo' value={name.gdo} className="selectOption">
                             <option value="1">GDO 1</option>
                             <option value="2">GDO 2</option>
                             <option value="3">GDO 3</option>
                             <option value="4">GDO 4</option>
                             onChange={changeHandler}
                         </select>
-                        <select name='project' value={name.project} class="btn btn-light" style={{marginTop:"30px"}}>
+                        <select name='project' value={name.project} className="selectOption">
                             <option value="1">BKI</option>
                             <option value="2">HMIS</option>
                             <option value="3">Cents</option>
@@ -97,7 +97,7 @@ function Signup()
                             <option value="10">oneportal</option>
                             onChange={changeHandler}
                         </select>
-                        <select name='role' value={name.role} class="btn btn-light" style={{marginTop:"30px"}}>
+                        <select name='role' value={name.role} className="selectOption">
                             <option value="1">employee</option>
                             <option value="2">manager</option>
                             <option value="3">admin</option>
@@ -105,9 +105,9 @@ function Signup()
                         </select>
                         <br></br>
                     </div>
-                    <br></br><button className="btn btn-dark" type="submit" style={{marginTop:"40px"}}>Submit</button>
-                    <br></br><br></br><b>have an account..?</b>&nbsp;&nbsp;&nbsp;
-                    <Link to="/login">Click Here</Link>
+                    <br></br><button className="btn btn-dark" type="submit" id="loginButton">Submit</button>
+                    <br></br><br></br><b style={{fontSize:"18px"}}>have an account..?</b>&nbsp;&nbsp;&nbsp;
+                    <Link to="/login" style={{fontSize:"16px",color:"#6295EC"}}>Click Here</Link>
                 </form>
             </div>
             <ToastContainer autoClose={2000} />

@@ -24,7 +24,7 @@ function ManagerEmps(){
 
     const gdoId=loggedinUser.gdoId;
     useEffect(()=>{
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerEmps?gdoId=${gdoId}`)
+        axios.get(`http://localhost:8001/managerEmps?gdoId=${gdoId}`)
         .then((res)=>{
             setManagerEmps(res.data.data);
         })
@@ -35,7 +35,7 @@ function ManagerEmps(){
     
     async function handleEmpOutside(clickedId,role,status)
     {
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
+        axios.get(`http://localhost:8001/empPendingTasksAtManagerOrAdmin?empId=${clickedId}&role=${role}`)
             .then(res => {
             var resdata = res.data;
                 setManagerEmpTask(resdata.data);
@@ -51,27 +51,21 @@ function ManagerEmps(){
         })
     }
     return(
-        <div style={{backgroundColor:"#B9DCEC",minHeight:"100vh"}}>
-            <div>
-                <nav className="navbar navbar-inverse" style={{height:"53px"}}>
-                    <div className="container-fluid">
-                        <ul className="nav navbar-nav">
-                        <li><a style={{color:"#B9DCEC",cursor:"pointer"}} onClick={()=>{navigate('/viewTasks')}}>Home</a></li>
-                        <li><a style={{pointerEvents:"none",marginLeft:"770px",color:"white"}}>{loggedinUser?.name}</a></li>
-                        <li><a style={{pointerEvents:"none",color:"white"}}>{loggedinUser.gdo.gdoName}</a></li>
-                        <li><a style={{pointerEvents:"none",color:"white"}}>{loggedinUser.project.projName}</a></li>
-                        <li><a style={{cursor:"pointer",color:"red"}} onClick={() => { localStorage.clear(); navigate('/login')}}>Logout</a></li>
-                        </ul>
-                    </div>
-                </nav>
+        <div style={{backgroundColor:"#1C2340"}}>
+            <div className="Eheader">
+                <div className="Home" onClick={() => { navigate('/viewTasks') }}>Home</div>
+                <div className="logedUserName">{loggedinUser?.name}</div>
+                <div className="gdoName">{loggedinUser.gdo.gdoName}</div>
+                <div className="projName">{loggedinUser.project.projName}</div>
+                <div className="logout" onClick={()=>{localStorage.clear();navigate('/login')}}>Logout</div>
             </div>
-            <div style={{backgroundColor:"#B9DCEC",display:'flex'}}>
-                <div style={{ height: '300px', width: '400px', boxShadow: '0 0 2px 2px', marginLeft: '120px', marginTop: "170px", borderRadius: '10px',backgroundColor:"#E4E4E4"}}>
-                   <table className="table table-hover">
+            <div className="ViewTasksMainDiv">
+                <div className="EmployeesListDiv">
+                   <table>
                         <thead style={{fontSize:"18px"}}>
                             <tr>
-                                <th>Employee</th>
-                                <th>Project Name</th>
+                                <th className="tableHead">Employee</th>
+                                <th className="tableHead">Project Name</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,25 +78,22 @@ function ManagerEmps(){
                                     handleEmpOutside(emp.id,getRole);
                                 }
                                 return(
-                                    <tr>
-                                        <td onClick={handleEmp} style={{cursor:"pointer"}}>{emp.name}</td>
-                                        <td>{emp.project.projName}</td>
+                                    <tr className="Row">
+                                        <td onClick={handleEmp} className="tableData" style={{cursor:"pointer"}}>{emp.name}</td>
+                                        <td onClick={handleEmp} className="tableData" style={{cursor:"pointer"}}>{emp.project.projName}</td>
                                     </tr>
                                 );
                             })}
                         </tbody>
                    </table>
                 </div>
-                <div style={{ height: '570px', width: '700px', boxShadow: '0 0 2px 2px', marginLeft: '70px', borderRadius: '10px',backgroundColor:"#E4E4E4",overflow: "scroll"}}>
-                    <h2 style={{textAlign:"center"}}>{stateEmpName}</h2>
-                    <div style={{marginLeft:"90px"}}><table className="table table-hover">
-                        <thead style={{fontSize:"18px"}}>
+                <div className="EmployeesTasksListDiv">
+                    <p style={{textAlign:"center",color:"yellow",fontSize:"20px"}}>{stateEmpName}</p>
+                    <table>
+                        <thead>
                             <tr>
-                                <th>Task</th>
-                                <th>Date</th>
-                            <tr>
-                                <th></th>
-                            </tr>
+                                <th className="tableHead">Task</th>
+                                <th className="tableHead">Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -117,7 +108,7 @@ function ManagerEmps(){
                                     }
                                     const clickedId=task.id;
                                     const roleName=loggedinUser.role.roleName;
-                                    axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
+                                    axios.put(`http://localhost:8001/ApproveORreject?taskId=${clickedId}&roleName=${roleName}&status=${status}`)
                                     .then((res)=>{
                                         handleEmpOutside(empId,getRole,status);
                                     })
@@ -126,18 +117,18 @@ function ManagerEmps(){
                                     })
                                 }
                                 return(
-                                    <tr>
-                                        <td>{task.tasks}</td>
-                                        <td>{task.date}</td>
+                                    <tr className="Row">
+                                        <td className="tableData">{task.tasks}</td>
+                                        <td className="tableData">{task.date}</td>
                                         <tr>
-                                            <button value="1" className="btn btn-success" onClick={handleApproveReject}>Approve</button>
-                                            <button value="2" className="btn btn-danger" style={{marginLeft:"15px"}} onClick={handleApproveReject}>Reject</button>
+                                            <button value="1" className="ApproveButton" onClick={handleApproveReject}>Approve</button>
+                                            <button value="2" className="RejectButton" onClick={handleApproveReject}>Reject</button>
                                         </tr>
                                     </tr>
                                 );
                             })}
                         </tbody>
-                    </table></div>
+                    </table>
                 </div>
             </div>
             <ToastContainer autoClose={500} />

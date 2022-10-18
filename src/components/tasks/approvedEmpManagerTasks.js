@@ -35,12 +35,12 @@ function Approved() {
         //for jwt token
         console.log("you get into")
         if (jwt === null) {
-            navigate('/login')  
+            navigate('/login')
         }
     }, []);
 
     useEffect(() => {
-        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/approvedEmpTasks?empId=${loggedinUser.id}&role=${loggedinUser.role.roleName}`)
+        axios.get(`http://localhost:8001/approvedEmpTasks?empId=${loggedinUser.id}&role=${loggedinUser.role.roleName}`)
             .then((response) => {
                 const fdata = response.data.data;
                 setRejectedTasks(fdata);
@@ -52,51 +52,38 @@ function Approved() {
 
     const capturedId = captureClickedTaskId.captureClickedTaskId;
     return (
-        <div style={{ backgroundColor: "#B9DCEC" }}>
-            <nav className="navbar navbar-inverse" style={{ height: "53px" }}>
-                <div className="container-fluid">
-                    <ul className="nav navbar-nav">
-                        <li><a style={{ color: "#B9DCEC", cursor: "pointer" }} onClick={() => { navigate('/viewTasks') }}>Home</a></li>
-                        <li><a style={{ color: "red", cursor: "pointer" }} onClick={() => { navigate('/rejectedTasks') }}>Rejected Tasks</a></li>
-                        <li><a style={{ pointerEvents: "none", marginLeft: "600px", color: "white" }}>{loggedinUser?.name}</a></li>
-                        <li><a style={{ pointerEvents: "none", color: "white" }}>{loggedinUser.gdo.gdoName}</a></li>
-                        <li><a style={{ pointerEvents: "none", color: "white" }}>{loggedinUser.project.projName}</a></li>
-                        <li><a style={{ cursor: "pointer", color: "red" }} onClick={() => { localStorage.clear(); navigate('/login') }}>Logout</a></li>
-                    </ul>
-                </div>
-            </nav>
-            <div className='m-5 card p-3  mx-auto sh' style={{ height: '500px', width: '750px', boxShadow: '0 0 2px 2px', marginLeft: '300px', marginTop: "10px", borderRadius: '10px', overflow: "scroll", backgroundColor: "#E4E4E4" }}>
-                <ul>
-                    <h3 style={{ textAlign: "center", color: "green" }}>Approved Tasks</h3>
-                    <div style={{ width: "500px", marginLeft: "160px" }}><table className="table table-hover">
+        <div style={{ backgroundColor: "#1C2340" }}>
+            <div className="Eheader">
+                <div className="Home" onClick={() => { navigate('/viewTasks') }}>Home</div>
+                <div className="ApprovePageRejectName" onClick={() => { navigate('/rejectedTasks') }}>Rejected Tasks</div>
+                <div className="logedUserName">{loggedinUser?.name}</div>
+                <div className="gdoName">{loggedinUser.gdo.gdoName}</div>
+                <div className="projName">{loggedinUser.project.projName}</div>
+                <div className="logout" onClick={() => { localStorage.clear(); navigate('/login') }}>Logout</div>
+            </div>
+            <div className="ViewTasksMainDiv">
+                <div className="viewTasksDiv">
+                    <p style={{ color: "yellow", fontSize: "20px" }}>Approved Tasks</p>
+                    <table style={{marginLeft:"200px"}}>
                         <thead style={{ fontSize: "18px" }}>
                             <tr>
-                                <th>Task</th>
-                                <th>Date</th>
+                                <th className="tableHead">Task</th>
+                                <th className="tableHead">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {rejectedTasks && rejectedTasks.map((task, i) => {
-                                let stat;
-                                if (task.Mstatus === "Rejected") {
-                                    stat = "Manager"
-                                }
-                                else if (task.Astatus === "Rejected") {
-                                    stat = "Srinivas"
-                                }
                                 return (
-                                    <tr>
-                                        <td>{task.tasks}</td>
-                                        <td>{task.date}</td>
-                                        <td>{stat}</td>
+                                    <tr className="Row">
+                                        <td className="tableData">{task.tasks}</td>
+                                        <td className="tableData">{task.date}</td>
                                     </tr>
                                 );
                             })}
                         </tbody>
-                    </table></div>
-                </ul>
+                    </table>
+                </div>
             </div>
-            <div style={{ height: "66px", display: "flex", marginTop: "10px", marginLeft: "500px" }}></div>
         </div>
     );
 }

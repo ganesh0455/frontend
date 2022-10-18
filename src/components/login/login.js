@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles.css'
@@ -22,7 +21,7 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/login", {
+        axios.post("http://localhost:8001/login", {
             email: event.target.email.value,
             password: event.target.password.value
         })
@@ -45,8 +44,9 @@ function Login() {
     }
 
     return (
-        <div className="mainDiv" style={{backgroundColor:"#1C2340",minHeight:"100vh",display:"flex"}}>
-            <div className='m-5 card p-3  mx-auto sh' style={{ height: '300px', width: '400px', boxShadow: '0 0 2px 2px', marginLeft: '500px', marginTop: "150px", borderRadius: '10px',backgroundColor:"#FED78C" }}>
+        <div className="mainDiv">
+            <p className="font-effect-fire-animation">Employee Task Recorder</p>
+            <div className='loginDiv'>
                 <form className='form' style={{ textAlign: "center" }} onSubmit={handleSubmit}>
                     <b><p style={{ fontSize: '20px' }}>Login</p></b>
                     <input className="form-control"
@@ -67,9 +67,9 @@ function Login() {
                         placeholder="Enter your password"
                         onChange={handleChange}
                     />
-                    <br /><br /><button className="btn btn-dark">Login</button>
-                    <br /><br /><b style={{fontSize:"17px"}}>Don't have account...?</b>&nbsp;&nbsp;&nbsp;
-                    <Link to="/signup">Click Here</Link>
+                    <br /><br /><button className="btn btn-dark" id="loginButton">Login</button>
+                    <br /><br /><b style={{fontSize:"15px"}}>Don't have account...?</b>&nbsp;&nbsp;&nbsp;
+                    <Link to="/signup" style={{fontSize:"16px",color:"#6295EC"}}>Click Here</Link>
                 </form>
             </div>
             <ToastContainer autoClose={2000}/>

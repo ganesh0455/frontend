@@ -5,18 +5,14 @@ function AHeaders() {
     const navigate = useNavigate();
     const loggedinUser = JSON.parse(localStorage.getItem('LoggedInUser'));
     return (
-        <nav class="navbar navbar-inverse" style={{ height: "53px" }}>
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li><a style={{ color: "#B9DCEC", cursor: "pointer" }} onClick={() => { navigate('/GdoProjects') }}>Gdo & Projects</a></li>
-                    <li><a style={{ color: "#B9DCEC", cursor: "pointer" }} onClick={() => navigate('/ManagerUnderAdmin')}>Employees & Managers</a></li>
-                    <li><a style={{ pointerEvents: "none", marginLeft: "420px", color: "white" }}>{loggedinUser?.name}</a></li>
-                    <li><a style={{ pointerEvents: "none", color: "white" }}>{loggedinUser.gdo.gdoName}</a></li>
-                    <li><a style={{ pointerEvents: "none", color: "white" }}>{loggedinUser.project.projName}</a></li>
-                    <li><a style={{ cursor: "pointer", color: "red" }} onClick={() => { localStorage.clear(); navigate('/login') }}>Logout</a></li>
-                </ul>
-            </div>
-        </nav>
+        <div className="Eheader">
+            <div className="GdoProjects" onClick={() => { navigate('/GdoProjects') }}>Gdo & Projects</div>
+            <div className="ManagersAndEmps" onClick={() => { navigate('/ManagerUnderAdmin') }}>Managers And Employees</div>
+            <div className="logedUserName">{loggedinUser?.name}</div>
+            <div className="gdoName">{loggedinUser.gdo.gdoName}</div>
+            <div className="projName">{loggedinUser.project.projName}</div>
+            <div className="logout" onClick={()=>{localStorage.clear();navigate('/login')}}>Logout</div>
+        </div>
     );
 }
 

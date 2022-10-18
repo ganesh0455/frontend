@@ -1,9 +1,597 @@
-
-
-#maindiv{
-  background-color:"#1C2340";
-  display:"flex";
+.mainDiv{
+  background-color: #040e24;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginDiv{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: x-large;
+  height: auto;
+  width: 400px;
+  position: absolute;
+  top:160px;
+  color: yellow;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua;
+}
+
+@import "https://fonts.googleapis.com/css?family=Rancho&effect=fire-animation";
+.font-effect-fire-animation{
+  font-size: 40px;
+    font-family: "Sofia";
+    text-shadow: 3px 3px 3px #ababab;
+    position: absolute;
+    top:50px;
+}
+
+#loginButton{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 20px;
+  height: auto;
+  width: 100px;
+  position: absolute;
+  left:150px;
+  color: aqua;
+  text-shadow: 3px 3px 3px #ababab;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  cursor: pointer;
+  box-shadow: 5px 5px 15px #1cfc03;
+}
+
+input.form-control:hover{
+  box-shadow: 2px 2px 14px aqua;
+  font-size: 20px;
+}
+
+.selectOption{
+  color: black;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-top: 30px;
+  margin-left: 5px;
+  box-shadow: 2px 2px 14px aqua;
+  border-radius: 5px;
+}
+
+select.selectOption:hover{
+  font-size: 15px;
+}
+
+.Eheader{
+  height: 60px;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  top: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 5px 5px 14px aqua;
+}
+
+.ApproveName{
+  position: absolute;
+  left:10px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: greenyellow;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.ApproveName:hover{
+  font-size: 17px;
+  color: rgb(21, 252, 0);
+  box-shadow: 2px 2px 14px aqua;
+}
+
+.RejectName{
+  position: absolute;
+  left:170px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.RejectPageApproveName{
+  position: absolute;
+  left:120px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: greenyellow;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ApprovePageRejectName{
+  position: absolute;
+  left:120px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.ApprovePageRejectName:hover{
+  position: absolute;
+  left:120px;
+  padding: 5px 10px;
+  font-size: 17px;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px white;
+  cursor: pointer;
+}
+
+div.RejectPageApproveName:hover{
+  position: absolute;
+  left:120px;
+  padding: 5px 10px;
+  font-size: 17px;
+  color: greenyellow;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 14px white;
 }
 
 
+div.RejectName:hover{
+  font-size: 17px;
+  color: red;
+  box-shadow: 2px 2px 14px white;
+}
+
+.YourEmps{
+  position: absolute;
+  left:320px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.YourEmps:hover{
+  font-size: 17px;
+  color: aqua;
+  box-shadow: 2px 2px 14px aqua;
+}
+
+.logedUserName{
+  position: absolute;
+  right: 370px;
+  color: aqua;
+  font-size: 15px;
+}
+
+div.logedUserName:hover{
+  text-shadow: 5px 5px 20px aqua;
+  font-family: "Sofia";
+}
+
+.gdoName{
+  position: absolute;
+  right: 260px;
+  color: #EC699E;
+  font-size: 15px;
+}
+
+.projName{
+  position: absolute;
+  right: 180px;
+  color: orange;
+  font-size: 15px;
+}
+
+.logout{
+  position: absolute;
+  right: 50px;
+  font-size: 15px;
+  padding: 5px 10px;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.logout:hover{
+  font-size: 17px;
+  color: red;
+  box-shadow: 2px 2px 14px #EC699E;
+}
+
+.Home{
+  position: absolute;
+  left:320px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  left: 10px;
+}
+
+div.Home:hover{
+  font-size: 17px;
+  color: aqua;
+  box-shadow: 2px 2px 14px aqua;
+}
+
+.GdoProjects{
+  position: absolute;
+  left:320px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  left: 10px;
+}
+
+div.GdoProjects:hover{
+  font-size: 17px;
+  color: aqua;
+  box-shadow: 2px 2px 14px aqua;
+}
+
+.ManagersAndEmps{
+  position: absolute;
+  left:180px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.ManagersAndEmps:hover{
+  font-size: 17px;
+  color: aqua;
+  box-shadow: 2px 2px 14px aqua;
+}
+
+.ViewTasksMainDiv{
+  background-color: #040e24;
+  min-height: 90.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+}
+
+.viewTasksDiv{
+  background-color: aliceblue;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 15px;
+  height: 500px;
+  width: 800px;
+  position: absolute;
+  top:70px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px hwb(66 0% 0%);
+  overflow-y: auto;
+  
+}
+
+.tableHead{
+  padding:10px 10px;
+  text-align: center;
+}
+
+.tableData{
+  padding:10px 50px;
+  text-align: center;
+}
+
+tr.Row:hover{
+  font-size: 17px;
+  background: rgba(0,0,0,0.3);
+  color: aqua;
+  box-shadow: 2px 2px 14px aqua;
+  height: 50px;
+  border-radius: 5%;
+}
+
+.Edit{
+  color: aqua;
+  box-shadow: 2px 2px 14px white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  left: 10px;
+  margin-right: 10px;
+}
+
+button.Edit:hover{
+  background-color: #4B55FA;
+  color: white;
+}
+
+.Delete{
+  color: aqua;
+  box-shadow: 2px 2px 14px white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  left: 10px;
+}
+
+button.Delete:hover{
+  background-color: red;
+  color: white;
+}
+
+.textAreaDiv{
+  position: absolute;
+  bottom: 17px;
+  left: 470px;
+  color: aqua;
+  background: rgba(0,0,0,0.3);
+}
+
+textarea.textAreaDiv:hover{
+  box-shadow: 2px 2px 14px white;
+  height: 50px;
+  font-size: 15px;
+  background: rgba(0,0,0,0.3);
+}
+
+.AddUpdateButton{
+  position: absolute;
+  bottom: 18px;
+  right: 500px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+button.AddUpdateButton:hover{
+  position: absolute;
+  bottom: 20px;
+  right: 500px;
+  font-size: 15px;
+  color: aqua;
+  box-shadow: 2px 2px 14px white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.EmployeesListDiv{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 15px;
+  height: 360px;
+  width: 400px;
+  position: absolute;
+  top:160px;
+  left: 150px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua;
+}
+
+.EmployeesTasksListDiv{
+  background-color: aliceblue;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 15px;
+  height: 500px;
+  width: 700px;
+  position: absolute;
+  top:90px;
+  left:630px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px hwb(66 0% 0%);
+  overflow-y: auto;
+}
+
+.ApproveButton{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px white;
+}
+
+button.ApproveButton:hover{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px green;
+  background-color: #1cfc03;
+  color: blue;
+}
+
+.RejectButton{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px white;
+  margin-left: 5px;
+}
+
+button.RejectButton:hover{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px rgb(231, 134, 134);
+  background-color: red;
+  margin-left: 5px;
+}
+
+.GDOProjects{
+  display: flex;
+  background-color: #040e24;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.GdoButtonsTitle{
+  position: absolute;
+  top: 70px;
+}
+
+.GdoButton{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px white;
+}
+
+button.GdoButton:hover{
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 14px green;
+  background-color: blue;
+  font-size: 20px;
+  color: yellow;
+}
+
+.ProjectsListDiv{
+  background-color: #040e24;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+}
+
+.ProjectsList{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 15px;
+  height: 360px;
+  width: 400px;
+  position: absolute;
+  top:190px;
+  left: 270px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua; 
+}
+
+.EmpsUnderProjDiv{
+  background-color: #040e24;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+}
+
+.EmpsListUnderProjDiv{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 15px;
+  height: 360px;
+  width: 400px;
+  position: absolute;
+  top:190px;
+  right: 230px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua;
+}
+
+.ManagerEmpsMaindiv{
+  display: flex;
+  background-color: #040e24;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ManagerList{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 15px;
+  height: 250px;
+  width: 460px;
+  position: absolute;
+  top:70px;
+  left: 30px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua; 
+}
+
+.ManagerEmpsList{
+  background-color: aliceblue;
+  border-radius: 10%;
+  text-align: center;
+  font-size: 15px;
+  height: 280px;
+  width: 460px;
+  position: absolute;
+  top:270px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px aqua;
+  overflow: auto; 
+}
+
+.EmpManagerTasks{
+  background-color: aliceblue;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 15px;
+  height: 500px;
+  width: 700px;
+  position: absolute;
+  top:90px;
+  left:600px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 10px;
+  box-shadow: 5px 5px 18px hwb(66 0% 0%);
+  overflow-y: auto; 
+}
