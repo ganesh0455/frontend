@@ -24,7 +24,7 @@ function Signup()
 
     const handleSubmit=event=>{
         event.preventDefault();
-        axios.post('http://localhost:8001/signUp',{
+        axios.post('http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/signUp',{
             name:event.target.name.value,
             email:event.target.email.value,
             password:event.target.password.value,

@@ -22,7 +22,7 @@ function GdoProjects() {
     }, []);
 
     const handleGdo = event => {
-        axios.get(`http://localhost:8001/projectsUnderGdo?gdoId=${event.target.value}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/projectsUnderGdo?gdoId=${event.target.value}`)
             .then((response) => {
                 setProjectsUnderGdo(response.data.data);
                 setShowEmpProjDiv(false)
@@ -66,7 +66,7 @@ function GdoProjects() {
                                         const getProjId = projects.id;
                                         setSelectedProject(projects.projName);
                                         setShowEmpProjDiv(true);
-                                        axios.get(`http://localhost:8001/empsUnderProject?projId=${getProjId}`)
+                                        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/empsUnderProject?projId=${getProjId}`)
                                             .then((response) => {
                                                 const resdata = response.data;
                                                 setEmpsUnderProject(resdata.data);

@@ -37,7 +37,7 @@ function Rejected() {
     }, []);
 
     async function rejectedEmpORManagerTasks(id, Role) {
-        axios.get(`http://localhost:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/rejectedEmpTasks?empId=${id}&role=${Role}`)
             .then((response) => {
                 const fdata = response.data.data;
                 setRejectedTasks(fdata);
@@ -49,7 +49,7 @@ function Rejected() {
 
     useEffect(() => {
         const gdoId = loggedinUser.gdoId;
-        axios.get(`http://localhost:8001/managerOfemp?gdoId=${gdoId}`)
+        axios.get(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/managerOfemp?gdoId=${gdoId}`)
             .then((response) => {
                 var ManagerNameResponse = response.data;
                 const nameOfManager = ManagerNameResponse.data.name;
@@ -65,7 +65,7 @@ function Rejected() {
     const capturedId = captureClickedTaskId.captureClickedTaskId;
     const handleUpdate = event => {
         event.preventDefault();
-        axios.put(`http://localhost:8001/updateTask?taskId=${capturedId}`, {
+        axios.put(`http://employeetaskrecorder.uksouth.cloudapp.azure.com:8001/updateTask?taskId=${capturedId}`, {
             tasks: event.target.textArea.value
         })
             .then((res) => {
